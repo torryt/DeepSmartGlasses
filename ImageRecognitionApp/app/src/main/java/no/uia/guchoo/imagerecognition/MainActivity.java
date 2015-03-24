@@ -1,16 +1,22 @@
 package no.uia.guchoo.imagerecognition;
 
+import android.app.Activity;
 import android.os.Bundle;
+import android.support.v7.app.ActionBarActivity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.Window;
+import android.view.WindowManager;
+import android.widget.Button;
 
 import com.metaio.sdk.jni.IGeometry;
 import com.metaio.sdk.jni.IMetaioSDKCallback;
-import com.metaio.sdk.*;
-import jp.epson.moverio.bt200.DisplayControl;
+import com.metaio.sdk.ARViewActivity;
 
 public class MainActivity extends ARViewActivity {
+
+    Button abutton;
 
     @Override
     protected int getGUILayout() {
@@ -24,6 +30,7 @@ public class MainActivity extends ARViewActivity {
 
     @Override
     protected void loadContents() {
+        abutton = (Button) findViewById(R.id.offbtn);
 
     }
 
@@ -32,19 +39,14 @@ public class MainActivity extends ARViewActivity {
 
     }
 
-    /**
-     * metaio SDK object
 
-    protected IMetaioSDKAndroid metaioSDK;
-     */
-
-    @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        Window win = getWindow();
+        WindowManager.LayoutParams winParams = win.getAttributes();
+        winParams.flags = winParams.flags | WindowManager.LayoutParams.FLAG_FULLSCREEN;
+        win.setAttributes(winParams);
         setContentView(R.layout.activity_main);
-
-        //String sign_str = "dCKk787jhXExgx5BH7NWkrssjWmjxZ4oSqg8kF423lo=";
-        metaioSDK.setSeeThrough(true);
 
     }
 
@@ -52,24 +54,20 @@ public class MainActivity extends ARViewActivity {
         System.exit(0);
     }
 
-    public void offOnClick(View v){
-    DisplayControl dc = new DisplayControl(this);
-        metaioSDK.setSeeThrough(true);
+    public void offOnClick(Button button){
+
     }
     public void onOnClick(View v){
-        DisplayControl dc = new DisplayControl(this);
-        metaioSDK.setSeeThrough(false);
-        dc.setBacklight(20);
+
     }
 
-    @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu_main, menu);
         return true;
     }
 
-    @Override
+
     public boolean onOptionsItemSelected(MenuItem item) {
         // Handle action bar item clicks here. The action bar will
         // automatically handle clicks on the Home/Up button, so long
