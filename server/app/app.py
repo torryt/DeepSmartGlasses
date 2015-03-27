@@ -4,96 +4,46 @@ import cPickle
 import datetime
 import logging
 import flask
+import json
 import werkzeug
 import optparse
 import tornado.wsgi
 import tornado.httpserver
 import numpy as np
 import pandas as pd
-import Image
-import cStringIO as StringIO
-import urllib
-import exifutil
-
 import caffe
+from os.path import expanduser
 
-REPO_DIRNAME = os.path.abspath(os.path.dirname(__file__) + '/../..')
+# Assuming 'caffe' is installed in $HOME/caffe
+REPO_DIRNAME = os.path.abspath(expanduser("~") + '/caffe')
 UPLOAD_FOLDER = '/tmp/caffe_demos_uploads'
-ALLOWED_IMAGE_EXTENSIONS = set(['png', 'bmp', 'jpg', 'jpe', 'jpeg', 'gif'])
+ALLOWED_IMAGE_EXTENSIONS = set(['PNG', 'BMP', 'JPG', 'JPE', 'JPEG', 'GIF'])
 
 # Obtain the flask app object
 app = flask.Flask(__name__)
 
 
-@app.route('/')
-def index():
-    return flask.render_template('index.html', has_result=False)
-
-
-@app.route('/classify_url', methods=['GET'])
-def classify_url():
-    imageurl = flask.request.args.get('imageurl', '')
-    try:
-        string_buffer = StringIO.StringIO(
-            urllib.urlopen(imageurl).read())
-        image = caffe.io.load_image(string_buffer)
-
-    except Exception as err:
-        # For any exception we encounter in reading the image, we will just
-        # not continue.
-        logging.info('URL Image open error: %s', err)
-        return flask.render_template(
-            'index.html', has_result=True,
-            result=(False, 'Cannot open image from URL.')
-        )
-
-    logging.info('Image: %s', imageurl)
-    result = app.clf.classify_image(image)
-    return flask.render_template(
-        'index.html', has_result=True, result=result, imagesrc=imageurl)
-
-
 @app.route('/classify_upload', methods=['POST'])
 def classify_upload():
     try:
-        # We will save the file to disk for possible data collection.
         imagefile = flask.request.files['imagefile']
         filename_ = str(datetime.datetime.now()).replace(' ', '_') + \
             werkzeug.secure_filename(imagefile.filename)
         filename = os.path.join(UPLOAD_FOLDER, filename_)
         imagefile.save(filename)
         logging.info('Saving to %s.', filename)
-        image = exifutil.open_oriented_im(filename)
+        input_image = caffe.io.load_image(filename)
 
     except Exception as err:
         logging.info('Uploaded image open error: %s', err)
-        return flask.render_template(
-            'index.html', has_result=True,
-            result=(False, 'Cannot open uploaded image.')
-        )
-
-    result = app.clf.classify_image(image)
-    return flask.render_template(
-        'index.html', has_result=True, result=result,
-        imagesrc=embed_image_html(image)
-    )
+        return err
+    result = app.clf.classify_image(input_image)
+    return format_result(result)
 
 
-def embed_image_html(image):
-    """Creates an image embedded in HTML base64 format."""
-    image_pil = Image.fromarray((255 * image).astype('uint8'))
-    image_pil = image_pil.resize((256, 256))
-    string_buf = StringIO.StringIO()
-    image_pil.save(string_buf, format='png')
-    data = string_buf.getvalue().encode('base64').replace('\n', '')
-    return 'data:image/png;base64,' + data
-
-
-def allowed_file(filename):
-    return (
-        '.' in filename and
-        filename.rsplit('.', 1)[1] in ALLOWED_IMAGE_EXTENSIONS
-    )
+def format_result(data):
+    rs = dict(data[1])
+    return json.dumps(rs)
 
 
 class ImagenetClassifier(object):
@@ -181,6 +131,7 @@ class ImagenetClassifier(object):
                            'image. Maybe try another one?')
 
 
+
 def start_tornado(app, port=5000):
     http_server = tornado.httpserver.HTTPServer(
         tornado.wsgi.WSGIContainer(app))
@@ -208,7 +159,7 @@ def start_from_terminal(app):
         action='store_true', default=False)
 
     opts, args = parser.parse_args()
-    ImagenetClassifier.default_args.update({'gpu_mode': opts.gpu})
+    ImagenetClassifier.default_args.update( { 'gpu_mode': opts.gpu})
 
     # Initialize classifier + warm start by forward for allocation
     app.clf = ImagenetClassifier(**ImagenetClassifier.default_args)
