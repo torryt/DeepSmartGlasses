@@ -22,7 +22,11 @@ android {
 dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
     compile 'com.android.support:appcompat-v7:22.0.0'
+<<<<<<< HEAD
     compile 'com.android.support:support-v4:22.0.0'
+=======
+    compile project(':BT200Ctrl')
+>>>>>>> ad7b991f962434615f6c4c234004b87e5415e807
     compile project(':metaioSDK')
     compile files('libs/BT200Ctrl.jar')
 }
