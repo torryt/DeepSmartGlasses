@@ -1,19 +1,19 @@
 import os
+import caffe
 import flask
 import logging
 import datetime
-import exifutil
 from flask import Flask, request, redirect, url_for
 from werkzeug.utils import secure_filename
+from os.path import expanduser
 
+
+REPO_DIRNAME = os.path.abspath(expanduser("~") + '/caffe')
 UPLOAD_FOLDER = '/tmp/deepsmartg/uploads'
 ALLOWED_EXTENSIONS = set(['txt', 'pdf', 'png', 'jpg', 'jpeg', 'gif'])
 
 app = Flask(__name__)
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
-
-
-
 
 
 @app.route('/')
@@ -29,7 +29,7 @@ def classify_upload():
         filename = os.path.join(UPLOAD_FOLDER, filename_)
         imagefile.save(filename)
         logging.info('Saving to %s.', filename)
-        image = exifutil.open_oriented_im(filename)
+        #image = exifutil.open_oriented_im(filename)
     except Exception as err:
         logging.info('Uploaded image open error %s', err)
         return 'Cannot open uploaded image'
