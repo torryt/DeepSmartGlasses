@@ -20,13 +20,14 @@ android {
 }
 
 dependencies {
-    compile fileTree(dir: 'libs', include: ['*.jar'])
+    compile fileTree(include: ['*.jar'], dir: 'libs')
     compile 'com.android.support:appcompat-v7:22.0.0'
 <<<<<<< HEAD
-    compile 'com.android.support:support-v4:22.0.0'
-=======
     compile project(':BT200Ctrl')
->>>>>>> ad7b991f962434615f6c4c234004b87e5415e807
+    compile files('D:/Development/DeepLearningforSmartGlasses/ImageRecognitionApp/BT200Ctrl/BT200Ctrl.jar')
+=======
+    compile 'com.android.support:support-v4:22.0.0'
     compile project(':metaioSDK')
     compile files('libs/BT200Ctrl.jar')
+>>>>>>> 4f8f79dbd964f0e1036e388e46a5b22ca1a6338a
 }
