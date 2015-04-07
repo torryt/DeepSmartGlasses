@@ -11,8 +11,8 @@
             <option value="$PROJECT_DIR$" />
             <option value="$PROJECT_DIR$/app" />
             <option value="$PROJECT_DIR$/app/libs" />
+            <option value="$PROJECT_DIR$/app/libs/metaioSDK" />
             <option value="$PROJECT_DIR$/app/libs/volley" />
-            <option value="$PROJECT_DIR$/metaioSDK" />
           </set>
         </option>
       </GradleProjectSettings>

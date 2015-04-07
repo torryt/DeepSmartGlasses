@@ -23,7 +23,7 @@ dependencies {
     compile fileTree(include: ['*.jar'], dir: 'libs')
     compile 'com.android.support:appcompat-v7:22.0.0'
     compile 'com.android.support:support-v4:22.0.0'
-    compile project(':metaioSDK')
+    compile project('libs:metaioSDK')
     compile project('libs:volley')
     compile files('libs/BT200Ctrl.jar')
 }

@@ -22,7 +22,6 @@ import com.metaio.R;
 import com.metaio.sdk.jni.Camera;
 import com.metaio.sdk.jni.ERENDER_SYSTEM;
 import com.metaio.sdk.jni.ESCREEN_ROTATION;
-import com.metaio.sdk.jni.IARELInterpreterCallback;
 import com.metaio.sdk.jni.IGeometry;
 import com.metaio.sdk.jni.IMetaioSDKAndroid;
 import com.metaio.sdk.jni.IMetaioSDKCallback;
