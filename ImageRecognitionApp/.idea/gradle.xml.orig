@@ -10,9 +10,13 @@
           <set>
             <option value="$PROJECT_DIR$" />
             <option value="$PROJECT_DIR$/app" />
+<<<<<<< HEAD
+            <option value="$PROJECT_DIR$/metaioSDK" />
+=======
             <option value="$PROJECT_DIR$/app/libs" />
             <option value="$PROJECT_DIR$/app/libs/metaioSDK" />
             <option value="$PROJECT_DIR$/app/libs/volley" />
+>>>>>>> f66102b6520aa928e6e55e9b349907ac7de5dc57
           </set>
         </option>
       </GradleProjectSettings>

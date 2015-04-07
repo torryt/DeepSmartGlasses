@@ -1,0 +1,5 @@
+<<<<<<< HEAD
+include 'app:libs:volley'':app'':app:libs'
+=======
+include 'app:libs:metaioSDK', 'app:libs:volley'
+>>>>>>> f66102b6520aa928e6e55e9b349907ac7de5dc57

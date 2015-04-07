@@ -89,8 +89,8 @@
     <orderEntry type="library" exported="" name="BT200Ctrl" level="project" />
     <orderEntry type="library" exported="" name="support-annotations-22.0.0" level="project" />
     <orderEntry type="library" exported="" name="appcompat-v7-22.0.0" level="project" />
-    <orderEntry type="module" module-name="metaioSDK" exported="" />
     <orderEntry type="module" module-name="volley" exported="" />
+    <orderEntry type="module" module-name="metaioSDK" exported="" />
   </component>
 </module>
 
