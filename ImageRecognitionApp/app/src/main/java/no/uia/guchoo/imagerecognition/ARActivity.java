@@ -6,6 +6,8 @@ import android.provider.MediaStore;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
+import android.view.Window;
+import android.view.WindowManager;
 import android.widget.Toast;
 
 import com.metaio.sdk.ARViewActivity;
@@ -19,7 +21,6 @@ import java.io.IOException;
 import java.util.Random;
 import java.util.Timer;
 import java.util.TimerTask;
-
 
 /**
  * Created by Guro on 26.03.2015.
@@ -50,7 +51,6 @@ public class ARActivity extends ARViewActivity {
 
     @Override
     protected void onGeometryTouched(IGeometry geometry) {
-
     }
 
     public void takeImage() {
@@ -80,7 +80,7 @@ public class ARActivity extends ARViewActivity {
 
     public void onButtonClick(View v){
         //request screenshot
-
+        Log.d("image", "taking image");
         String storeDir = Environment.getExternalStorageDirectory().toString();
         File rootDir = new File(storeDir + File.separator + "album");
         if(!rootDir.exists()){
