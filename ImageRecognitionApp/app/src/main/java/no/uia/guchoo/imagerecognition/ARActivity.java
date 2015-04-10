@@ -4,12 +4,6 @@ import android.content.ContentValues;
 import android.os.Environment;
 import android.provider.MediaStore;
 import android.util.Log;
-import android.view.Gravity;
-import android.view.View;
-import android.view.Window;
-import android.view.WindowManager;
-import android.widget.Toast;
-
 import com.metaio.sdk.ARViewActivity;
 import com.metaio.sdk.jni.IGeometry;
 import com.metaio.sdk.jni.IMetaioSDKCallback;
@@ -75,45 +69,11 @@ public class ARActivity extends ARViewActivity {
                 } catch (IOException ex) {
                     ex.printStackTrace();
                 }
-                addImageGallery(file);
-    }
 
-    public void onButtonClick(View v){
-        //request screenshot
-        Log.d("image", "taking image");
-        String storeDir = Environment.getExternalStorageDirectory().toString();
-        File rootDir = new File(storeDir + File.separator + "album");
-        if(!rootDir.exists()){
-            rootDir.mkdir();
+            String imagepath = Environment.getExternalStorageDirectory().getPath() + File.separator + "album" + File.separator + fname;
+            metaioSDK.requestScreenshot(imagepath);
+            addImageGallery(file);
         }
-        Random generator = new Random();
-        int i = 10000;
-        i = generator.nextInt(i);
-        String fname = "GG-"+i+".jpg";
-        File file = new File (rootDir,fname);
-        if(file.exists()) file.delete();
-        try {
-            FileOutputStream out = new FileOutputStream(file);
-            out.flush();
-            out.close();
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
-        showMessage(fname);
-        addImageGallery(file);
-    }
-
-    private void showMessage(String fname){
-        String imagepath = Environment.getExternalStorageDirectory().getPath() + File.separator + "album" + File.separator + fname;
-        metaioSDK.requestScreenshot(imagepath);
-        String message = "Image Saved";
-        Toast toast = Toast.makeText(getApplicationContext(),message,Toast.LENGTH_SHORT);
-        toast.setGravity(Gravity.CENTER,0,0);
-        toast.show();
-    }
 
     private void addImageGallery(File file) {
         ContentValues values = new ContentValues();
@@ -123,12 +83,10 @@ public class ARActivity extends ARViewActivity {
     }
 
     protected void onStop() {
-        setResult(2);
         super.onStop();
     }
     @Override
     protected void onDestroy() {
-        setResult(2);
         super.onDestroy();
     }
 }
