@@ -4,6 +4,12 @@ import android.content.ContentValues;
 import android.os.Environment;
 import android.provider.MediaStore;
 import android.util.Log;
+import android.view.Gravity;
+import android.view.View;
+import android.view.Window;
+import android.view.WindowManager;
+import android.widget.Toast;
+
 import com.metaio.sdk.ARViewActivity;
 import com.metaio.sdk.jni.IGeometry;
 import com.metaio.sdk.jni.IMetaioSDKCallback;
@@ -39,7 +45,7 @@ public class ARActivity extends ARViewActivity {
             public void run() {
                 takeImage();
             }
-        }, 0, 1000);
+        }, 0, 2000);
 
     }
 
@@ -70,10 +76,18 @@ public class ARActivity extends ARViewActivity {
                     ex.printStackTrace();
                 }
 
-            String imagepath = Environment.getExternalStorageDirectory().getPath() + File.separator + "album" + File.separator + fname;
+        String imagepath = Environment.getExternalStorageDirectory().getPath() + File.separator + "album" + File.separator + fname;
             metaioSDK.requestScreenshot(imagepath);
             addImageGallery(file);
         }
+
+     private void showMessage(){
+         //Use to display text result
+        String message = "";
+        Toast toast = Toast.makeText(getApplicationContext(),message,Toast.LENGTH_SHORT);
+        toast.setGravity(Gravity.BOTTOM,0,0);
+        toast.show();
+    }
 
     private void addImageGallery(File file) {
         ContentValues values = new ContentValues();
