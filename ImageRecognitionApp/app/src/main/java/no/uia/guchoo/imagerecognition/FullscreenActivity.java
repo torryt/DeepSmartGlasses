@@ -20,7 +20,9 @@ public class FullscreenActivity extends Activity {
         win.setAttributes(winParams);
 
         Intent intent = new Intent(getApplicationContext(), ARActivity.class);
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         startActivity(intent);
         finish();
+        this.onDestroy();
     }
 }
