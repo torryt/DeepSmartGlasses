@@ -42,7 +42,7 @@ public class ARActivity extends ARViewActivity {
             public void run() {
                 takeImage();
             }
-        }, 0, 2000);
+        },3000, 2000);
     }
 
     @Override
