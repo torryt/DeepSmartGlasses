@@ -5,9 +5,6 @@ import android.os.Environment;
 import android.provider.MediaStore;
 import android.util.Log;
 import android.view.Gravity;
-import android.view.View;
-import android.view.Window;
-import android.view.WindowManager;
 import android.widget.Toast;
 
 import com.metaio.sdk.ARViewActivity;
@@ -76,11 +73,20 @@ public class ARActivity extends ARViewActivity {
                     ex.printStackTrace();
                 }
 
-        String imagepath = Environment.getExternalStorageDirectory().getPath() + File.separator + "album" + File.separator + fname;
-            metaioSDK.requestScreenshot(imagepath);
+            requestScreenshot(fname);
             addImageGallery(file);
         }
 
+    private void requestScreenshot(String fname){
+        String imagePath = Environment.getExternalStorageDirectory().getPath() + File.separator + "album" + File.separator + fname;
+        try {
+            metaioSDK.requestScreenshot(imagePath);
+        }
+        catch (NullPointerException e){
+            //metaioSDK is null when exiting. This catch is to avoid a nullpointerexception when exiting the app
+          System.exit(0);
+        }
+    }
      private void showMessage(){
          //Use to display text result
         String message = "";
