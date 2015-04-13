@@ -43,7 +43,6 @@ public class ARActivity extends ARViewActivity {
                 takeImage();
             }
         }, 0, 2000);
-
     }
 
     @Override
@@ -81,7 +80,6 @@ public class ARActivity extends ARViewActivity {
                 finish();
             }
         }
-
     private void requestScreenshot(String fname){
         String imagePath = Environment.getExternalStorageDirectory().getPath() + File.separator + "album" + File.separator + fname;
         metaioSDK.requestScreenshot(imagePath);
