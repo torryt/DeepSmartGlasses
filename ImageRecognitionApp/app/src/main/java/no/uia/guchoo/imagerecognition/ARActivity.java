@@ -72,20 +72,19 @@ public class ARActivity extends ARViewActivity {
                 } catch (IOException ex) {
                     ex.printStackTrace();
                 }
-
-            requestScreenshot(fname);
-            addImageGallery(file);
+            if(metaioSDK!=null) {
+                requestScreenshot(fname);
+                addImageGallery(file);
+            }
+            else{
+                timer.cancel();
+                finish();
+            }
         }
 
     private void requestScreenshot(String fname){
         String imagePath = Environment.getExternalStorageDirectory().getPath() + File.separator + "album" + File.separator + fname;
-        try {
-            metaioSDK.requestScreenshot(imagePath);
-        }
-        catch (NullPointerException e){
-            //metaioSDK is null when exiting. This catch is to avoid a nullpointerexception when exiting the app
-          System.exit(0);
-        }
+        metaioSDK.requestScreenshot(imagePath);
     }
      private void showMessage(){
          //Use to display text result
