@@ -23,6 +23,11 @@ ALLOWED_IMAGE_EXTENSIONS = set(['PNG', 'BMP', 'JPG', 'JPE', 'JPEG', 'GIF'])
 app = flask.Flask(__name__)
 
 
+
+@app.route('/', methods=['GET'])
+def default_route():
+    return "This is the default route for the image classification API"
+
 @app.route('/classify_upload', methods=['POST'])
 def classify_upload():
     try:
