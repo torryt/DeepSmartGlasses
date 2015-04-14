@@ -1,1 +1,1 @@
-include ':app', 'app:libs:metaioSDK', 'app:libs:volley'
+include ':app', 'app:libs:metaioSDK'
