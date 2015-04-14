@@ -1,6 +1,7 @@
 package no.uia.guchoo.imagerecognition;
 
 import android.os.AsyncTask;
+import android.os.Looper;
 import android.util.Log;
 
 import com.loopj.android.http.AsyncHttpClient;
@@ -18,24 +19,19 @@ import java.io.FileNotFoundException;
 /**
  * Created by torrytufteland on 14/04/15.
  */
-public class ClassifyImageTask extends AsyncTask<String, Void, String> {
-    String encodedString = "";
+public class ClassifyImageTask extends Thread {
+
     File image;
-
     RequestParams params = new RequestParams();
+    // Local tunnel address. Is only temporary and WILL change.
+    String uploadServerUri = "https://johzietdpl.localtunnel.me/classify_upload";
 
-    // Local tunnel address. Is only temporary and will change.
-    String uploadServerUri = "https://pqnmxggmri.localtunnel.me/classify_upload";
 
-    @Override
-    protected String doInBackground(String... params) {
-        Log.d("ClassifyImageTask", "Creating File from image: " + params[0]);
-        image = new File(params[0]);
-        return "File created";
-    }
+    public void run(String filePath) {
+        Looper.prepare();
 
-    @Override
-    protected void onPostExecute(String msg) {
+        Log.d("ClassifyImageTask", "Creating File from image: " + filePath);
+        image = new File(filePath);
         Log.d("ClassifyImageTask", "Calling image upload");
         try {
             params.put("image_file", new FileInputStream(image));
@@ -43,12 +39,13 @@ public class ClassifyImageTask extends AsyncTask<String, Void, String> {
             e.printStackTrace();
         }
         makeHTTPCall();
+        Looper.loop();
     }
 
 
     private void makeHTTPCall() {
-        Log.d("makeHTTPCall", "Invoking API");
         AsyncHttpClient client = new AsyncHttpClient();
+        Log.d("makeHTTPCall", "Requesting API with params: " + params.toString());
 
         // Don't forget to change the IP address to your LAN address. Port no as well.
         client.post(uploadServerUri,

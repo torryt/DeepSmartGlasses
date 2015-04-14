@@ -31,7 +31,6 @@ def default_route():
 @app.route('/classify_upload', methods=['POST'])
 def classify_upload():
     try:
-        imagefile = flask.request
         imagefile = flask.request.files['image_file']
         filename_ = str(datetime.datetime.now()).replace(' ', '_') + \
             werkzeug.secure_filename(imagefile.filename)

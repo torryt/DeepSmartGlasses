@@ -45,17 +45,9 @@ public class ARActivity extends ARViewActivity {
             public void run() {
                 String filePath = takeImageAndSaveToSd();
                 Log.i("loadContents", "Saved file to " + filePath);
-                new ClassifyImageTask().execute(filePath);
+                new ClassifyImageTask().run(filePath);
             }
         }, 3000, 8000);
-
-//        timer = new Timer();
-//        timer.scheduleAtFixedRate(new TimerTask() {
-//            @Override
-//            public void run() {
-//                takeImageAndSaveToSd();
-//            }
-//        },3000, 2000);
     }
 
     @Override
