@@ -24,7 +24,7 @@ import java.util.TimerTask;
  */
 public class ARActivity extends ARViewActivity {
  Timer timer;
-
+ String dir = Environment.getExternalStorageDirectory().toString();
     @Override
     protected int getGUILayout() {return R.layout.ar_view;
     }
@@ -51,7 +51,6 @@ public class ARActivity extends ARViewActivity {
 
     public void takeImage() {
         Log.d("image", "taking image");
-            String dir = Environment.getExternalStorageDirectory().toString();
             File rootDir = new File(dir + File.separator + "album");
                 if (!rootDir.exists()) {
                     rootDir.mkdir();
@@ -77,11 +76,21 @@ public class ARActivity extends ARViewActivity {
             }
             else{
                 timer.cancel();
+             //   deleteImagesOnDisk(rootDir);
                 finish();
                 android.os.Process.killProcess(android.os.Process.myPid());
                 System.exit(1);
             }
         }
+
+    private void deleteImagesOnDisk(File dir) {
+           if (dir.isDirectory()) {
+               for (File child : dir.listFiles())
+                   deleteImagesOnDisk(child);
+           }
+            dir.delete();
+    }
+
     private void requestScreenshot(String fname){
         String imagePath = Environment.getExternalStorageDirectory().getPath() + File.separator + "album" + File.separator + fname;
         metaioSDK.requestScreenshot(imagePath);
