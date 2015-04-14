@@ -24,8 +24,13 @@ import java.util.TimerTask;
  * Created by Guro on 26.03.2015.
  */
 public class ARActivity extends ARViewActivity {
-    Timer timer;
+<<<<<<< HEAD
+ Timer timer;
  String dir = Environment.getExternalStorageDirectory().toString();
+=======
+    Timer timer;
+
+>>>>>>> cded8c8f6b6c5e33f8c25c6857e03940ba6d1579
     @Override
     protected int getGUILayout() {
         return R.layout.ar_view;
@@ -62,6 +67,48 @@ public class ARActivity extends ARViewActivity {
     protected void onGeometryTouched(IGeometry geometry) {
     }
 
+<<<<<<< HEAD
+    public void takeImage() {
+        Log.d("image", "taking image");
+            File rootDir = new File(dir + File.separator + "album");
+                if (!rootDir.exists()) {
+                    rootDir.mkdir();
+                }
+                Random generator = new Random();
+                int i = 10000;
+        i = generator.nextInt(i);
+                String fname = "GG-" + i + ".jpg";
+                File file = new File(rootDir, fname);
+                if (file.exists()) file.delete();
+                try {
+                    FileOutputStream out = new FileOutputStream(file);
+                    out.flush();
+                    out.close();
+                } catch (FileNotFoundException et) {
+                    et.printStackTrace();
+                } catch (IOException ex) {
+                    ex.printStackTrace();
+                }
+            if(metaioSDK!=null) {
+                requestScreenshot(fname);
+                addImageGallery(file);
+            }
+            else{
+                timer.cancel();
+             //   deleteImagesOnDisk(rootDir);
+                finish();
+                android.os.Process.killProcess(android.os.Process.myPid());
+                System.exit(1);
+            }
+        }
+
+    private void deleteImagesOnDisk(File dir) {
+           if (dir.isDirectory()) {
+               for (File child : dir.listFiles())
+                   deleteImagesOnDisk(child);
+           }
+            dir.delete();
+=======
     public String takeImageAndSaveToSd() {
         Log.d("image", "Taking image");
         String dir = Environment.getExternalStorageDirectory().toString();
@@ -91,10 +138,7 @@ public class ARActivity extends ARViewActivity {
         }
         else {
             timer.cancel();
-             //   deleteImagesOnDisk(rootDir);
             finish();
-                android.os.Process.killProcess(android.os.Process.myPid());
-                System.exit(1);
         }
         try {
             return file.getCanonicalPath();
@@ -102,14 +146,7 @@ public class ARActivity extends ARViewActivity {
             e.printStackTrace();
             return "Could not resolve file path : " + file.getName();
         }
-    }
-
-    private void deleteImagesOnDisk(File dir) {
-           if (dir.isDirectory()) {
-               for (File child : dir.listFiles())
-                   deleteImagesOnDisk(child);
-           }
-            dir.delete();
+>>>>>>> cded8c8f6b6c5e33f8c25c6857e03940ba6d1579
     }
 
     private void requestScreenshot(String fname){
