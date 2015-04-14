@@ -78,6 +78,8 @@ public class ARActivity extends ARViewActivity {
             else{
                 timer.cancel();
                 finish();
+                android.os.Process.killProcess(android.os.Process.myPid());
+                System.exit(1);
             }
         }
     private void requestScreenshot(String fname){
