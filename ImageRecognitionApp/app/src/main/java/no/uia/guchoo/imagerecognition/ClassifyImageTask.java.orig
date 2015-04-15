@@ -2,7 +2,6 @@ package no.uia.guchoo.imagerecognition;
 
 import android.os.Looper;
 import android.util.Log;
-import android.view.Gravity;
 import android.widget.Toast;
 
 import com.loopj.android.http.AsyncHttpClient;
@@ -19,13 +18,23 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 
 
+<<<<<<< HEAD
+public class ClassifyImageTask extends Thread {
+    File image;
+=======
 public class ClassifyImageTask {
+    private static ARActivity parent;
     File imageFile;
+>>>>>>> a1ae134ca3520dd6389b613db4a0fd16342ccd27
     RequestParams params = new RequestParams();
     // Local tunnel address. Is only temporary and WILL change.
     String uploadServerUri = "https://deepsmart.localtunnel.me/classify_upload";
 
     public void run(String filePath) {
+<<<<<<< HEAD
+        Looper.prepare();
+=======
+>>>>>>> a1ae134ca3520dd6389b613db4a0fd16342ccd27
         Log.d("ClassifyImageTask", "Creating File from image: " + filePath);
         imageFile = new File(filePath);
         Log.d("ClassifyImageTask", "Calling image upload");
@@ -35,9 +44,13 @@ public class ClassifyImageTask {
             e.printStackTrace();
         }
         makeHTTPCall();
+<<<<<<< HEAD
 
        // Toast.makeText(act, result.toString(), Toast.LENGTH_LONG).show();
 
+        Looper.loop();
+=======
+>>>>>>> a1ae134ca3520dd6389b613db4a0fd16342ccd27
     }
 
     private void makeHTTPCall() {
