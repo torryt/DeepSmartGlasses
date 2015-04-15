@@ -51,7 +51,7 @@ public class ARActivity extends ARViewActivity {
                 Log.i("loadContents", "Saved file to " + filePath);
                 new ClassifyImageTask().run(filePath);
             }
-        }, 3000, 3000);
+        }, 3000, 5000);
     }
 
     @Override
