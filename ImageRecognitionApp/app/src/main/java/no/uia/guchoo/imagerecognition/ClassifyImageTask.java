@@ -1,8 +1,6 @@
 package no.uia.guchoo.imagerecognition;
 
-import android.os.Looper;
 import android.util.Log;
-import android.view.Gravity;
 import android.widget.Toast;
 
 import com.loopj.android.http.AsyncHttpClient;
@@ -15,7 +13,6 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 
 
@@ -35,9 +32,6 @@ public class ClassifyImageTask {
             e.printStackTrace();
         }
         makeHTTPCall();
-
-       // Toast.makeText(act, result.toString(), Toast.LENGTH_LONG).show();
-
     }
 
     private void makeHTTPCall() {
@@ -52,7 +46,7 @@ public class ClassifyImageTask {
                     @Override
                     public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
                         Log.d("makeHTTPCall", "Status code: " + String.valueOf(statusCode));
-
+                       // showResult(response);
                     }
 
                     public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONArray errorResponse) {
@@ -60,6 +54,11 @@ public class ClassifyImageTask {
                     }
 
                 });
+    }
+
+    public String showResult(JSONObject response){
+       return response.toString();
+       // Toast.makeText(act.getApplicationContext(), "Heihei", Toast.LENGTH_LONG).show();
     }
   }
 

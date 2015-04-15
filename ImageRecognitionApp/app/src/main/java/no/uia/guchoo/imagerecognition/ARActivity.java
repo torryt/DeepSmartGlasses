@@ -128,7 +128,7 @@ public class ARActivity extends ARViewActivity {
     protected void onDestroy() {
         super.onDestroy();
         timer.cancel();
-        deleteImagesOnDisk();
+       // deleteImagesOnDisk();
         android.os.Process.killProcess(android.os.Process.myPid());
         System.exit(1);
     }
