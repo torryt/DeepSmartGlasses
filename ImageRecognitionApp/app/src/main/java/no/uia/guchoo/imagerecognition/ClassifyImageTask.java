@@ -1,9 +1,7 @@
 package no.uia.guchoo.imagerecognition;
 
-import android.os.AsyncTask;
 import android.os.Looper;
 import android.util.Log;
-import android.view.Gravity;
 import android.widget.Toast;
 
 import com.loopj.android.http.AsyncHttpClient;
@@ -23,16 +21,13 @@ import java.io.FileNotFoundException;
  */
 
 public class ClassifyImageTask extends Thread {
-    private static ARActivity parent;
     File image;
     RequestParams params = new RequestParams();
     // Local tunnel address. Is only temporary and WILL change.
     String uploadServerUri = "https://deepsmart.localtunnel.me/classify_upload";
 
-
     public void run(String filePath) {
         Looper.prepare();
-
         Log.d("ClassifyImageTask", "Creating File from image: " + filePath);
         image = new File(filePath);
         Log.d("ClassifyImageTask", "Calling image upload");
@@ -42,6 +37,9 @@ public class ClassifyImageTask extends Thread {
             e.printStackTrace();
         }
         makeHTTPCall();
+
+       // Toast.makeText(act, result.toString(), Toast.LENGTH_LONG).show();
+
         Looper.loop();
     }
 
@@ -57,7 +55,7 @@ public class ClassifyImageTask extends Thread {
                     @Override
                     public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
                         Log.d("makeHTTPCall", "Status code: " + String.valueOf(statusCode));
-                        showResponse(response);
+
                     }
 
                     public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONArray errorResponse) {
@@ -66,11 +64,5 @@ public class ClassifyImageTask extends Thread {
 
                 });
     }
-    private void showResponse(JSONObject resp){
-        //Use to display text result
-        String message = resp.toString();
-        Toast toast = Toast.makeText(parent.getApplicationContext(),message,Toast.LENGTH_SHORT);
-        toast.setGravity(Gravity.BOTTOM, 0, 0);
-        toast.show();
-    }
-}
+  }
+

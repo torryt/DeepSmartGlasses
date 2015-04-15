@@ -14,6 +14,8 @@ import com.metaio.sdk.ARViewActivity;
 import com.metaio.sdk.jni.IGeometry;
 import com.metaio.sdk.jni.IMetaioSDKCallback;
 
+import org.json.JSONObject;
+
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
@@ -82,6 +84,7 @@ public class ARActivity extends ARViewActivity {
         }
             requestScreenshot(fname);
             addImageGallery(file);
+
         try {
             return file.getCanonicalPath();
         } catch (IOException e) {
@@ -102,9 +105,9 @@ public class ARActivity extends ARViewActivity {
         String imagePath = Environment.getExternalStorageDirectory().getPath() + File.separator + "album" + File.separator + fname;
         metaioSDK.requestScreenshot(imagePath);
     }
-    private void showMessage(){
+    public void showResponse(JSONObject repo){
         //Use to display text result
-        String message = "Image taken";
+        String message = repo.toString();
         Toast toast = Toast.makeText(getApplicationContext(),message,Toast.LENGTH_SHORT);
         toast.setGravity(Gravity.BOTTOM, 0, 0);
         toast.show();
