@@ -24,7 +24,7 @@ public class ClassifyImageTask extends Thread {
     File image;
     RequestParams params = new RequestParams();
     // Local tunnel address. Is only temporary and WILL change.
-    String uploadServerUri = "https://johzietdpl.localtunnel.me/classify_upload";
+    String uploadServerUri = "https://deepsmart.localtunnel.me/classify_upload";
 
 
     public void run(String filePath) {

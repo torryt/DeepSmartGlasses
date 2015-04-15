@@ -2,6 +2,7 @@ package no.uia.guchoo.imagerecognition;
 
 import android.content.ContentValues;
 import android.os.Environment;
+import android.os.Looper;
 import android.provider.MediaStore;
 import android.util.Log;
 import android.view.Gravity;
@@ -25,7 +26,7 @@ import java.util.TimerTask;
  */
 public class ARActivity extends ARViewActivity {
     Timer timer;
- String dir = Environment.getExternalStorageDirectory().toString();
+ //String dir = Environment.getExternalStorageDirectory().toString();
     @Override
     protected int getGUILayout() {
         return R.layout.ar_view;
@@ -47,7 +48,7 @@ public class ARActivity extends ARViewActivity {
                 Log.i("loadContents", "Saved file to " + filePath);
                 new ClassifyImageTask().run(filePath);
             }
-        }, 3000, 8000);
+        }, 3000, 3000);
     }
 
     @Override
@@ -55,6 +56,7 @@ public class ARActivity extends ARViewActivity {
     }
 
     public String takeImageAndSaveToSd() {
+        Looper.prepare();
         Log.d("image", "Taking image");
         String dir = Environment.getExternalStorageDirectory().toString();
         File rootDir = new File(dir + File.separator + "album");
@@ -79,15 +81,15 @@ public class ARActivity extends ARViewActivity {
 
         if(metaioSDK!=null) {
             requestScreenshot(fname);
+            showMessage();
             addImageGallery(file);
         }
         else {
             timer.cancel();
-             //   deleteImagesOnDisk(rootDir);
+            deleteImagesOnDisk(rootDir);
             finish();
-                android.os.Process.killProcess(android.os.Process.myPid());
-                System.exit(1);
         }
+        Looper.loop();
         try {
             return file.getCanonicalPath();
         } catch (IOException e) {
@@ -101,7 +103,10 @@ public class ARActivity extends ARViewActivity {
                for (File child : dir.listFiles())
                    deleteImagesOnDisk(child);
            }
-            dir.delete();
+        boolean isDeleted = dir.delete();
+        if(isDeleted == false){
+            Log.d("Delete","Could not delete file");
+        }
     }
 
     private void requestScreenshot(String fname){
@@ -110,7 +115,7 @@ public class ARActivity extends ARViewActivity {
     }
     private void showMessage(){
         //Use to display text result
-        String message = "";
+        String message = "Image taken";
         Toast toast = Toast.makeText(getApplicationContext(),message,Toast.LENGTH_SHORT);
         toast.setGravity(Gravity.BOTTOM,0,0);
         toast.show();
@@ -129,6 +134,8 @@ public class ARActivity extends ARViewActivity {
     @Override
     protected void onDestroy() {
         super.onDestroy();
+        android.os.Process.killProcess(android.os.Process.myPid());
+        System.exit(1);
     }
 }
 
