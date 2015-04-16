@@ -4,43 +4,26 @@ import android.content.ContentValues;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Environment;
-import android.os.Looper;
 import android.provider.MediaStore;
 import android.util.Log;
 import android.view.Gravity;
 import android.widget.Toast;
 
-import com.loopj.android.http.AsyncHttpClient;
-import com.loopj.android.http.JsonHttpResponseHandler;
-import com.loopj.android.http.RequestParams;
-import com.loopj.android.http.SyncHttpClient;
 import com.metaio.sdk.ARViewActivity;
 import com.metaio.sdk.jni.IGeometry;
 import com.metaio.sdk.jni.IMetaioSDKCallback;
-
-import org.apache.http.Header;
-import org.json.JSONObject;
 
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.net.URI;
 import java.util.Random;
 import java.util.Timer;
 import java.util.TimerTask;
-import java.util.logging.Handler;
-import java.util.logging.LogRecord;
 
 
-/**
- * Created by Guro on 26.03.2015.
- */
 public class ARActivity extends ARViewActivity {
     Timer timer;
-    File imageFile;
-    RequestParams params = new RequestParams();
-    String uploadServerUri = "https://deepsmart.localtunnel.me/classify_upload";
 
     @Override
     protected int getGUILayout() {
@@ -54,48 +37,15 @@ public class ARActivity extends ARViewActivity {
 
     @Override
     protected void loadContents() {
-        ClassifyImageTask.setContext(this);
         timer = new Timer();
         timer.scheduleAtFixedRate(new TimerTask() {
             @Override
             public void run() {
                 String filePath = takeImageAndSaveToSd();
                 Log.i("loadContents", "Saved file to " + filePath);
-
-                classifyImage(filePath);
+                new ClassifyImageTask().classifyImage(filePath, ARActivity.this);
             }
         }, 3000, 5000);
-    }
-
-    private void classifyImage(String filePath) {
-        Log.d("ClassifyImageTask", "Creating File from image: " + filePath);
-        imageFile = new File(filePath);
-        Log.d("ClassifyImageTask", "Calling image upload");
-        try {
-            params.put("image_file", imageFile);
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        }
-        AsyncHttpClient client = new SyncHttpClient();
-
-        Log.d("makeHTTPCall", "Requesting API");
-
-        client.post(uploadServerUri,
-                params, new JsonHttpResponseHandler() {
-                    // When the response returned by REST has Http
-                    // response code '200'
-                    @Override
-                    public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
-                        Log.d("makeHTTPCall", "Status code: " + String.valueOf(statusCode));
-                        Log.d("makeHTTPCall", "Response: " + response.toString());
-                        showResult(response);
-                    }
-
-                    public void onFailure(int statusCode, Header[] headers, JSONObject response, Throwable e) {
-                        Log.d("makeHTTPCall", "Request failed!\nStatus code: " + statusCode);
-                    }
-
-                });
     }
 
     @Override
@@ -155,10 +105,10 @@ public class ARActivity extends ARViewActivity {
         getContentResolver().insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI,values);
     }
 
-    public void showResult(final JSONObject response) {
+    public void showResult(final String response) {
         this.runOnUiThread(new Runnable() {
             public void run() {
-                Toast toast = Toast.makeText(getApplicationContext(), response.toString() ,Toast.LENGTH_LONG);
+                Toast toast = Toast.makeText(ARActivity.this, response, Toast.LENGTH_LONG);
                 toast.setGravity(Gravity.BOTTOM, 0, 0);
                 toast.show();
             }
