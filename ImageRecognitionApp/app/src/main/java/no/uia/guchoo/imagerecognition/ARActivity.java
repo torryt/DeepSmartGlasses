@@ -44,7 +44,7 @@ public class ARActivity extends ARViewActivity {
 
     @Override
     protected void loadContents() {
-
+        ClassifyImageTask.setContext(this);
         timer = new Timer();
         timer.scheduleAtFixedRate(new TimerTask() {
             @Override
@@ -104,13 +104,6 @@ public class ARActivity extends ARViewActivity {
     private void requestScreenshot(String fname){
         String imagePath = Environment.getExternalStorageDirectory().getPath() + File.separator + "album" + File.separator + fname;
         metaioSDK.requestScreenshot(imagePath);
-    }
-    public void showResponse(JSONObject repo){
-        //Use to display text result
-        String message = repo.toString();
-        Toast toast = Toast.makeText(getApplicationContext(),message,Toast.LENGTH_SHORT);
-        toast.setGravity(Gravity.BOTTOM, 0, 0);
-        toast.show();
     }
 
     private void addImageGallery(File file) {

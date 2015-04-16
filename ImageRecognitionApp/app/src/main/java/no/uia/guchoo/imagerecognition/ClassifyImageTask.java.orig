@@ -50,8 +50,13 @@ public class ClassifyImageTask {
                     @Override
                     public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
                         Log.d("makeHTTPCall", "Status code: " + String.valueOf(statusCode));
+<<<<<<< HEAD
                         Log.d("makeHTTPCall", "Response: " + response.toString());
+                        showResponse(response);
+						showResponse(response);
+=======
                         showResult(response);
+>>>>>>> 417eda8229a7257b7ddf979d3c6fce80d34b9af7
                     }
 
                     public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONArray errorResponse) {
@@ -63,7 +68,7 @@ public class ClassifyImageTask {
 
     public static Context getContext() {
         return context;
-    }s
+    }
 
     public static void setContext(Context con) {
         context = con;
