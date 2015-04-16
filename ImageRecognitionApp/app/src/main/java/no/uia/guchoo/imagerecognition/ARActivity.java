@@ -10,10 +10,15 @@ import android.util.Log;
 import android.view.Gravity;
 import android.widget.Toast;
 
+import com.loopj.android.http.AsyncHttpClient;
+import com.loopj.android.http.JsonHttpResponseHandler;
+import com.loopj.android.http.RequestParams;
+import com.loopj.android.http.SyncHttpClient;
 import com.metaio.sdk.ARViewActivity;
 import com.metaio.sdk.jni.IGeometry;
 import com.metaio.sdk.jni.IMetaioSDKCallback;
 
+import org.apache.http.Header;
 import org.json.JSONObject;
 
 import java.io.File;
@@ -24,6 +29,8 @@ import java.net.URI;
 import java.util.Random;
 import java.util.Timer;
 import java.util.TimerTask;
+import java.util.logging.Handler;
+import java.util.logging.LogRecord;
 
 
 /**
@@ -31,6 +38,9 @@ import java.util.TimerTask;
  */
 public class ARActivity extends ARViewActivity {
     Timer timer;
+    File imageFile;
+    RequestParams params = new RequestParams();
+    String uploadServerUri = "https://deepsmart.localtunnel.me/classify_upload";
 
     @Override
     protected int getGUILayout() {
@@ -51,9 +61,41 @@ public class ARActivity extends ARViewActivity {
             public void run() {
                 String filePath = takeImageAndSaveToSd();
                 Log.i("loadContents", "Saved file to " + filePath);
-                new ClassifyImageTask().run(filePath);
+
+                classifyImage(filePath);
             }
         }, 3000, 5000);
+    }
+
+    private void classifyImage(String filePath) {
+        Log.d("ClassifyImageTask", "Creating File from image: " + filePath);
+        imageFile = new File(filePath);
+        Log.d("ClassifyImageTask", "Calling image upload");
+        try {
+            params.put("image_file", imageFile);
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
+        AsyncHttpClient client = new SyncHttpClient();
+
+        Log.d("makeHTTPCall", "Requesting API");
+
+        client.post(uploadServerUri,
+                params, new JsonHttpResponseHandler() {
+                    // When the response returned by REST has Http
+                    // response code '200'
+                    @Override
+                    public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
+                        Log.d("makeHTTPCall", "Status code: " + String.valueOf(statusCode));
+                        Log.d("makeHTTPCall", "Response: " + response.toString());
+                        showResult(response);
+                    }
+
+                    public void onFailure(int statusCode, Header[] headers, JSONObject response, Throwable e) {
+                        Log.d("makeHTTPCall", "Request failed!\nStatus code: " + statusCode);
+                    }
+
+                });
     }
 
     @Override
@@ -111,6 +153,16 @@ public class ARActivity extends ARViewActivity {
         values.put(MediaStore.Images.Media.DATA, file.getAbsolutePath());
         values.put(MediaStore.Images.Media.MIME_TYPE,"image/jpeg");
         getContentResolver().insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI,values);
+    }
+
+    public void showResult(final JSONObject response) {
+        this.runOnUiThread(new Runnable() {
+            public void run() {
+                Toast toast = Toast.makeText(getApplicationContext(), response.toString() ,Toast.LENGTH_LONG);
+                toast.setGravity(Gravity.BOTTOM, 0, 0);
+                toast.show();
+            }
+        });
     }
 
     protected void onStop() {

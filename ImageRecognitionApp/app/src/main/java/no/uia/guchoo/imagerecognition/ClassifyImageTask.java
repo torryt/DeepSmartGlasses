@@ -11,7 +11,6 @@ import com.loopj.android.http.RequestParams;
 import com.loopj.android.http.SyncHttpClient;
 
 import org.apache.http.Header;
-import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.io.File;
@@ -21,10 +20,11 @@ import java.io.FileNotFoundException;
 public class ClassifyImageTask {
     File imageFile;
     RequestParams params = new RequestParams();
-    // Local tunnel address. Is only temporary and WILL change.
     String uploadServerUri = "https://deepsmart.localtunnel.me/classify_upload";
     private static Context context;
     Context c = ClassifyImageTask.getContext();
+
+
 
     public void run(String filePath) {
         Log.d("ClassifyImageTask", "Creating File from image: " + filePath);
@@ -35,14 +35,10 @@ public class ClassifyImageTask {
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         }
-        makeHTTPCall();
-    }
-
-    private void makeHTTPCall() {
         AsyncHttpClient client = new SyncHttpClient();
+
         Log.d("makeHTTPCall", "Requesting API");
 
-        // Don't forget to change the IP address to your LAN address. Port no as well.
         client.post(uploadServerUri,
                 params, new JsonHttpResponseHandler() {
                     // When the response returned by REST has Http
@@ -54,7 +50,7 @@ public class ClassifyImageTask {
                         showResult(response);
                     }
 
-                    public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONArray errorResponse) {
+                    public void onFailure(int statusCode, Header[] headers, JSONObject response, Throwable e) {
                         Log.d("makeHTTPCall", "Request failed!\nStatus code: " + statusCode);
                     }
 
@@ -63,7 +59,7 @@ public class ClassifyImageTask {
 
     public static Context getContext() {
         return context;
-    }s
+    }
 
     public static void setContext(Context con) {
         context = con;
