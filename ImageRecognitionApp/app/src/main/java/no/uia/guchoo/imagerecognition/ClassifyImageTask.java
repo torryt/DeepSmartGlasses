@@ -1,6 +1,8 @@
 package no.uia.guchoo.imagerecognition;
 
+import android.content.Context;
 import android.util.Log;
+import android.view.Gravity;
 import android.widget.Toast;
 
 import com.loopj.android.http.AsyncHttpClient;
@@ -21,6 +23,8 @@ public class ClassifyImageTask {
     RequestParams params = new RequestParams();
     // Local tunnel address. Is only temporary and WILL change.
     String uploadServerUri = "https://deepsmart.localtunnel.me/classify_upload";
+    private static Context context;
+    Context c = ClassifyImageTask.getContext();
 
     public void run(String filePath) {
         Log.d("ClassifyImageTask", "Creating File from image: " + filePath);
@@ -46,19 +50,28 @@ public class ClassifyImageTask {
                     @Override
                     public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
                         Log.d("makeHTTPCall", "Status code: " + String.valueOf(statusCode));
-                       // showResult(response);
+                        showResult(response);
                     }
 
                     public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONArray errorResponse) {
-                        Log.d("makeHTTPCall", "Request failed!\nStatus code: "+statusCode);
+                        Log.d("makeHTTPCall", "Request failed!\nStatus code: " + statusCode);
                     }
 
                 });
     }
 
-    public String showResult(JSONObject response){
-       return response.toString();
-       // Toast.makeText(act.getApplicationContext(), "Heihei", Toast.LENGTH_LONG).show();
+    public static Context getContext() {
+        return context;
     }
-  }
+
+    public static void setContext(Context con) {
+        context = con;
+    }
+
+    public void showResult(JSONObject response) {
+       Toast toast = Toast.makeText(c.getApplicationContext(), response.toString() ,Toast.LENGTH_LONG);
+       toast.setGravity(Gravity.BOTTOM, 0, 0);
+       toast.show();
+    }
+}
 
