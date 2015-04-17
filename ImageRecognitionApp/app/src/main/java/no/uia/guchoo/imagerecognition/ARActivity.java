@@ -24,6 +24,7 @@ import java.util.TimerTask;
 
 public class ARActivity extends ARViewActivity {
     Timer timer;
+    public static boolean run = true;
 
     @Override
     protected int getGUILayout() {
@@ -37,6 +38,25 @@ public class ARActivity extends ARViewActivity {
 
     @Override
     protected void loadContents() {
+    }
+
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        timer.cancel();
+        timer.purge();
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+
         timer = new Timer();
         timer.scheduleAtFixedRate(new TimerTask() {
             @Override
@@ -49,8 +69,15 @@ public class ARActivity extends ARViewActivity {
     }
 
     @Override
+    protected void onStop() {
+        super.onStop();
+    }
+
+
+    @Override
     protected void onGeometryTouched(IGeometry geometry) {
     }
+
 
     public String takeImageAndSaveToSd() {
         Log.d("image", "Taking image");
@@ -74,8 +101,8 @@ public class ARActivity extends ARViewActivity {
         } catch (IOException ex) {
             ex.printStackTrace();
         }
-            requestScreenshot(fname);
-            addImageGallery(file);
+        requestScreenshot(fname);
+        addImageGallery(file);
 
         try {
             return file.getCanonicalPath();
@@ -86,11 +113,11 @@ public class ARActivity extends ARViewActivity {
     }
 
     private void deleteImagesOnDisk() {
-       File albumDir = new File(Environment.getExternalStorageDirectory().toString()+ File.separator + "album");
-           if (albumDir.isDirectory()) {
-               for (File child : albumDir.listFiles()) child.delete();
-               sendBroadcast(new Intent(Intent.ACTION_MEDIA_MOUNTED, Uri.parse("file://" + Environment.getExternalStorageDirectory())));
-           }
+        File albumDir = new File(Environment.getExternalStorageDirectory().toString()+ File.separator + "album");
+        if (albumDir.isDirectory()) {
+            for (File child : albumDir.listFiles()) child.delete();
+            sendBroadcast(new Intent(Intent.ACTION_MEDIA_MOUNTED, Uri.parse("file://" + Environment.getExternalStorageDirectory())));
+        }
     }
 
     private void requestScreenshot(String fname){
@@ -115,17 +142,12 @@ public class ARActivity extends ARViewActivity {
         });
     }
 
-    protected void onStop() {
-        super.onStop();
-    }
-
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        timer.cancel();
-       // deleteImagesOnDisk();
-        android.os.Process.killProcess(android.os.Process.myPid());
-        System.exit(1);
+        // deleteImagesOnDisk();
+//        android.os.Process.killProcess(android.os.Process.myPid());
+//        System.exit(1);
     }
 }
 
