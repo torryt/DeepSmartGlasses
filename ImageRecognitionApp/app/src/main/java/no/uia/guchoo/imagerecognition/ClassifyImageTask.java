@@ -40,7 +40,7 @@ public class ClassifyImageTask {
                     public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
                         Log.d("makeHTTPCall", "Status code: " + String.valueOf(statusCode));
                         Log.d("makeHTTPCall", "Response: " + response.toString());
-                        activity.showResult(response.toString());
+                        activity.showResult(response);
                     }
                 });
     }
