@@ -65,7 +65,6 @@ public class ARActivity extends ARViewActivity {
     @Override
     protected void onResume() {
         super.onResume();
-
         timer = new Timer();
         timer.scheduleAtFixedRate(new TimerTask() {
             @Override
@@ -204,9 +203,9 @@ public class ARActivity extends ARViewActivity {
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        // deleteImagesOnDisk();
-//        android.os.Process.killProcess(android.os.Process.myPid());
-//        System.exit(1);
+       // deleteImagesOnDisk();
+        android.os.Process.killProcess(android.os.Process.myPid()); //Stop the app from restarting on exit
+        System.exit(1);
     }
 }
 
