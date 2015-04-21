@@ -142,14 +142,14 @@ public class ARActivity extends ARViewActivity {
 
     public void showResult(final JSONObject response) {
         ArrayList<ImageViewModel> resp = parseResult(response);
-        formatOutput(resp);
+        sortImageViewModel(resp);
         DecimalFormat df = new DecimalFormat("#%");
         StringBuilder finalResult = new StringBuilder();
 
-        for(int i=2;i>=0;i--) {
+        for(int i=0;i<=2;i++) {
             String percentString = df.format(resp.get(i).Percent);
             String categoryString = resp.get(i).Category.toString();
-            if(i==0)
+            if(i==2)
                 finalResult.append(categoryString + " : " + percentString);
             else
                 finalResult.append(categoryString + " : " + percentString + "\n");
@@ -165,14 +165,14 @@ public class ARActivity extends ARViewActivity {
         });
     }
 
-    private void formatOutput(ArrayList<ImageViewModel> resp) {
+    private void sortImageViewModel(ArrayList<ImageViewModel> resp) {
         List<ImageViewModel> sortedList = new ArrayList<>();
 
         // Sort list
         Collections.sort(resp,new Comparator<ImageViewModel>() {
             @Override
             public int compare(ImageViewModel lhs, ImageViewModel rhs) {
-                return (int)Math.floor(lhs.Percent - rhs.Percent);
+                return (int)Math.floor(rhs.Percent - lhs.Percent);
             }
         });
 
