@@ -106,7 +106,7 @@ class ImagenetClassifier(object):
             scores = self.net.predict([image], oversample=True).flatten()
             endtime = time.time()
 
-            indices = (-scores).argsort()[:5]
+            indices = (-scores).argsort()[:10]
             predictions = self.labels[indices]
 
             # In addition to the prediction text, we will also produce
