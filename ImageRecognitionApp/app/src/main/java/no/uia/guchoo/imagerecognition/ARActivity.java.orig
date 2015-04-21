@@ -65,6 +65,7 @@ public class ARActivity extends ARViewActivity {
     @Override
     protected void onResume() {
         super.onResume();
+
         timer = new Timer();
         timer.scheduleAtFixedRate(new TimerTask() {
             @Override
@@ -165,6 +166,7 @@ public class ARActivity extends ARViewActivity {
         });
     }
 
+<<<<<<< HEAD
     private void formatOutput(ArrayList<ImageViewModel> resp) {
         List<ImageViewModel> sortedList = new ArrayList<>();
 
@@ -200,12 +202,18 @@ public class ARActivity extends ARViewActivity {
         return images;
     }
 
+    protected void onStop() {
+        super.onStop();
+    }
+
+=======
+>>>>>>> 77aec46d3d8992f3ad1ae61213fb8cdc0713f077
     @Override
     protected void onDestroy() {
         super.onDestroy();
-       // deleteImagesOnDisk();
-        android.os.Process.killProcess(android.os.Process.myPid()); //Stop the app from restarting on exit
-        System.exit(1);
+        // deleteImagesOnDisk();
+//        android.os.Process.killProcess(android.os.Process.myPid());
+//        System.exit(1);
     }
 }
 
