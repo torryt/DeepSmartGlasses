@@ -1,3 +1,15 @@
+import os
+import time
+import numpy as np
+import pandas as pd
+import cPickle
+import logging
+import caffe
+from os.path import expanduser
+
+
+REPO_DIRNAME = os.path.abspath(expanduser("~") + '/caffe')
+
 class ImagenetClassifier(object):
     default_args = {
         'model_def_file': (
