@@ -8,7 +8,7 @@ import caffe
 from os.path import expanduser
 
 
-REPO_DIRNAME = os.path.abspath(expanduser("~") + '/caffe')
+REPO_DIRNAME = expanduser("~") + '/caffe'
 
 class ImagenetClassifier(object):
     default_args = {
