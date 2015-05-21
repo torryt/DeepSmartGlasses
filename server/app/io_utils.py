@@ -22,5 +22,5 @@ def fix_names():
         image_list = glob.glob(scene+'/*.jpg')
         for filename in image_list:
             regex = re.search('[^_]*', osp.basename(filename))
-            newfile = scene + '/' +regex.group() + '.jpg'
+            newfile = scene + '/' + regex.group() + '.jpg'
             os.rename(filename, newfile)
