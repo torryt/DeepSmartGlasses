@@ -1,25 +1,3 @@
----
-title: Web demo
-description: Image classification demo running as a Flask web server.
-category: example
-include_in_docs: true
-priority: 10
----
-
-# Web Demo
-
-## Requirements
-
-The demo server requires Python with some dependencies.
-To make sure you have the dependencies, please run `pip install -r examples/web_demo/requirements.txt`, and also make sure that you've compiled the Python Caffe interface and that it is on your `PYTHONPATH` (see [installation instructions](/installation.html)).
-
-Make sure that you have obtained the Reference CaffeNet Model and the ImageNet Auxiliary Data:
-
-    ./scripts/download_model_binary.py models/bvlc_reference_caffenet
-    ./data/ilsvrc12/get_ilsvrc_aux.sh
-
-NOTE: if you run into trouble, try re-downloading the auxiliary files.
-
 ## Run
 
 Running `python examples/web_demo/app.py` will bring up the demo server, accessible at `http://0.0.0.0:5000`.
