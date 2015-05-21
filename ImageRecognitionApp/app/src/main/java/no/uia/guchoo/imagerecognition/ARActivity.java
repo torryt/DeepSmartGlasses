@@ -33,7 +33,6 @@ import java.util.TimerTask;
 
 public class ARActivity extends ARViewActivity {
     Timer timer;
-    public static boolean run = true;
 
     @Override
     protected int getGUILayout() {
@@ -129,7 +128,8 @@ public class ARActivity extends ARViewActivity {
     }
 
     private void requestScreenshot(String fname){
-        String imagePath = Environment.getExternalStorageDirectory().getPath() + File.separator + "album" + File.separator + fname;
+        String imagePath = Environment.getExternalStorageDirectory().getPath()
+                + File.separator + "album" + File.separator + fname;
         metaioSDK.requestScreenshot(imagePath);
     }
 
@@ -203,7 +203,7 @@ public class ARActivity extends ARViewActivity {
     @Override
     protected void onDestroy() {
         super.onDestroy();
-       // deleteImagesOnDisk();
+      //  deleteImagesOnDisk();
         android.os.Process.killProcess(android.os.Process.myPid()); //Stop the app from restarting on exit
         System.exit(1);
     }
