@@ -143,16 +143,16 @@ public class ARActivity extends ARViewActivity {
     public void showResult(final JSONObject response) {
         ArrayList<ImageViewModel> resp = parseResult(response);
         sortImageViewModel(resp);
-        DecimalFormat df = new DecimalFormat("#%");
+       // DecimalFormat df = new DecimalFormat("#%");
         StringBuilder finalResult = new StringBuilder();
 
         for(int i=0;i<=2;i++) {
-            String percentString = df.format(resp.get(i).Percent);
+            // String percentString = df.format(resp.get(i).Percent);
             String categoryString = resp.get(i).Category.toString();
             if(i==2)
-                finalResult.append(categoryString + " : " + percentString);
+                finalResult.append(3 + ":" + categoryString);
             else
-                finalResult.append(categoryString + " : " + percentString + "\n");
+                finalResult.append(i+1 + ":" + categoryString + "\n");
         }
         final String finalString = finalResult.toString();
 
@@ -203,7 +203,7 @@ public class ARActivity extends ARViewActivity {
     @Override
     protected void onDestroy() {
         super.onDestroy();
-      //  deleteImagesOnDisk();
+        deleteImagesOnDisk();
         android.os.Process.killProcess(android.os.Process.myPid()); //Stop the app from restarting on exit
         System.exit(1);
     }
