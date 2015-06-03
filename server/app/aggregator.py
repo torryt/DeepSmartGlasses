@@ -193,5 +193,5 @@ def play():
     # skew_images("/Users/torrytufteland/Dropbox/DeepSmartGlasses/scenes/in_clean_close/")
 
 
-# run()
-play()
+run()
+# play()
