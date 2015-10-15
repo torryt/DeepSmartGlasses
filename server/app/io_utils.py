@@ -1,5 +1,3 @@
-__author__ = 'torrytufteland'
-
 import os
 import os.path as osp
 import re

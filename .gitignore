@@ -28,3 +28,5 @@ proguard/
 
 .DS_Store
 *.pyc
+
+.idea

@@ -1,11 +1,8 @@
-__author__ = 'torrytufteland'
-
 import os.path as osp
 import os
 import csv
 import glob
 import caffe
-import pickle
 import logging
 import numpy as np
 import imagenetclassifier as inc
@@ -14,7 +11,7 @@ from os.path import expanduser
 
 class Classifier:
 
-    def __init__(self, work_dir=expanduser("~") + '/Dropbox/DeepSmartGlasses/scenes'):
+    def __init__(self, work_dir=expanduser("~") + '/imagenetclassifier'):
         inc.ImagenetClassifier.default_args.update({'gpu_mode': True})
 
         # Initialize classifier + warm start by forward for allocation
@@ -46,6 +43,7 @@ class Classifier:
         column_names = ["Scene", "Score"]
 
         self.write_to_csv(self.work_dir + '/average_score_by_scene.csv', content, column_names)
+
 
     def get_files_in_subfolders(self, directory, extension="jpg"):
         folders = [x[0] for x in os.walk(directory)]
@@ -82,7 +80,7 @@ class Classifier:
             stats[row][3] = (float(len([x for x in index_results[row, :] if 0 < x <= 5])) / len(valid_elements)) * 100
             stats[row][4] = (float(len([x for x in index_results[row, :] if x == 1])) / len(valid_elements)) * 100
 
-        output_folder = '/Users/torrytufteland/Dropbox/DeepSmartGlasses/Results/'
+        output_folder = self.work_dir + '/results'
         if oversample:
             outfile = osp.join(output_folder, '_index_ranks_oversampled.csv')
         else:
@@ -178,6 +176,7 @@ def skew_images(folder):
             os.makedirs(out_dir)
         scipy.misc.imsave(osp.join(out_dir, osp.basename(filename)), resized_im)
 
+
 def run():
     classifier = Classifier()
     # classifier.compute_average_rank_by_scenes()
@@ -187,11 +186,9 @@ def run():
 
 def play():
     classifier = Classifier()
-    # classifier.compute_average_score_by_scenes()
-    result = classifier.classify_image("/Users/torrytufteland/Dropbox/DeepSmartGlasses/scenes/in_noise_dist/digital watch.jpg")
+    result = classifier.classify_image(classifier.work_dir + "/hammer.jpg")
     print result[0][0:10]
-    # skew_images("/Users/torrytufteland/Dropbox/DeepSmartGlasses/scenes/in_clean_close/")
 
-
-# run()
-play()
+if __name__ == "__main__":
+    # run()
+    play()
