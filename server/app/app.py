@@ -21,6 +21,7 @@ app = flask.Flask(__name__)
 def default_route():
     return "This is the default route for the image classification API"
 
+
 @app.route('/classify_upload', methods=['POST'])
 def classify_upload():
     try:

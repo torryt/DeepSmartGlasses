@@ -10,6 +10,7 @@ from os.path import expanduser
 
 REPO_DIRNAME = expanduser("~") + '/caffe'
 
+
 class ImagenetClassifier(object):
     default_args = {
         'model_def_file': (
@@ -93,3 +94,10 @@ class ImagenetClassifier(object):
             logging.info('Classification error: %s', err)
             return (False, 'Something went wrong when classifying the '
                            'image. Maybe try another one?')
+
+if __name__ == "__main__":
+    ImagenetClassifier.default_args.update({'gpu_mode': True})
+
+    # Initialize classifier + warm start by forward for allocation
+    clf = ImagenetClassifier(**ImagenetClassifier.default_args)
+    clf.net.forward()
