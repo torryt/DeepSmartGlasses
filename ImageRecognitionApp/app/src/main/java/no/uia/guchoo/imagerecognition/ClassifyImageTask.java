@@ -15,8 +15,8 @@ import java.io.FileNotFoundException;
 
 
 public class ClassifyImageTask {
-    String uploadServerUri = "https://deepsmart.localtunnel.me/classify_upload";
-
+ //   String uploadServerUri = "https://deepsmart.localtunnel.me/classify_upload";
+    String uploadServerUri = "http://128.39.145.233:5000";
 
     public void classifyImage(String filePath, final ARActivity activity) {
         RequestParams params = new RequestParams();
